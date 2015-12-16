@@ -10,10 +10,15 @@ require 'httparty'
 
 class Instamojo
 
-  @api_key = "cbd5e5bdfa7227960d1e4170cca8308c"
-  @auth_token = "cf6c7f98831144957e1913f40bd1c1a7"
+  @api_key = nil
+  @auth_token = nil
+  @headers = nil
 
-  @headers = { "X-Api-Key" => @api_key, "X-Auth-Token" => @auth_token }
+  def initialize(api_key, auth_token)
+      @api_key = api_key
+      @auth_token = auth_token
+      @headers = { "X-Api-Key" => @api_key, "X-Auth-Token" => @auth_token }
+  end
 
   def self.debug
     response = HTTParty.get('https://www.instamojo.com/api/1.1/debug/', :headers => @headers)

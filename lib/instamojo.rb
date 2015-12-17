@@ -30,6 +30,7 @@ class Instamojo
   end
 
   # Authentication
+  # --------------------
 
   def create_auth_token(username, password) # not working
     response = HTTParty.post(api_call("tokens/"), :headers => { "X-Api-Key" => @api_key},
@@ -48,13 +49,13 @@ class Instamojo
   end
 
   # Link
+  # --------------------
 
   def get_all_links
     response = HTTParty.get(api_call("links/"), :headers => @headers)
     puts response.body
   end
 
-  # http://stackoverflow.com/questions/19461333/how-can-i-implement-this-post-request-using-httparty
   def new_link(object)
     response = HTTParty.post(api_call("links/"), :headers => @headers,
       body:  { title: object[:title], description: object[:description], currency: object[:currency], base_price: object[:base_price] }
@@ -67,7 +68,7 @@ class Instamojo
     puts response.body
   end
 
-  def upload_file # based on above link
+  def upload_file # based on above link AND have to check if it's working
     # https://github.com/jwagener/httmultiparty
   end
 
@@ -77,10 +78,11 @@ class Instamojo
   end
 
   def archive_link
-
+    # ....
   end
 
   # Payments
+  # --------------------
 
   def list_all_payments
     response = HTTParty.get(api_call("payments/"), :headers => @headers)
@@ -89,15 +91,16 @@ class Instamojo
 
   # Filter List of All Payments by Date
   def method_name
-
+    # ...
   end
 
-  def payment_details(payment_id)
+  def payment_details(payment_id) # have to check if it is working
     response = HTTParty.get(api_call("payments/#{payment_id}/"), :headers => @headers)
     puts response.body
   end
 
-  # Refunds
+  # Refunds (have to check all these if they are working)
+  # --------------------
 
   def new_refund
     response = HTTParty.post(api_call("refunds/"), :headers => @headers,

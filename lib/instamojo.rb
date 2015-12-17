@@ -23,7 +23,7 @@ class Instamojo
   end
 
   def api_call(method)
-    return  "#{@base_url}#{method}"
+    return  "https://www.instamojo.com/api/1.1/#{method}"
   end
 
   def debug

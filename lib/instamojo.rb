@@ -14,8 +14,6 @@ class Instamojo
   @auth_token = nil
   @headers = nil
 
-  @base_url = "https://www.instamojo.com/api/1.1/"
-
   def initialize(api_key, auth_token)
       @api_key = api_key
       @auth_token = auth_token
@@ -33,8 +31,9 @@ class Instamojo
 
   # Authentication
 
-  def create_auth_token
-    response = HTTParty.post(api_call("tokens/"), :headers => { "X-Api-Key" => @api_key})
+  def create_auth_token(username, password) # not working
+    response = HTTParty.post(api_call("tokens/"), :headers => { "X-Api-Key" => @api_key},
+               body: { username: username, password: password })
     puts response.body
   end
 
@@ -43,7 +42,7 @@ class Instamojo
     puts response.body
   end
 
-  def delete_auth_token(auth_token)
+  def delete_auth_token(auth_token) #not working
     response = HTTParty.delete(api_call("tokens/#{auth_token}"), :headers => @headers)
     puts response.body
   end
@@ -56,15 +55,15 @@ class Instamojo
   end
 
   # http://stackoverflow.com/questions/19461333/how-can-i-implement-this-post-request-using-httparty
-  def new_link
+  def new_link(object)
     response = HTTParty.post(api_call("links/"), :headers => @headers,
-      :body => [{ "title" => "sample title", "description" => "sample description", "currency" => "INR", "base_price" => "10.00"}].to_json
+      body:  { title: object[:title], description: object[:description], currency: object[:currency], base_price: object[:base_price] }
     )
     puts response.body
   end
 
   def get_file_upload_url
-    response = HTTParty.get(api_call('links/get_file_upload_url/'), :headers => @headers)
+    response = HTTParty.get(api_call("links/get_file_upload_url/"), :headers => @headers)
     puts response.body
   end
 
@@ -73,7 +72,7 @@ class Instamojo
   end
 
   def link_details(slug)
-    response = HTTParty.get(api_call('links/#{slug}'), :headers => @headers)
+    response = HTTParty.get(api_call("links/#{slug}"), :headers => @headers)
     puts response.body
   end
 
@@ -84,7 +83,7 @@ class Instamojo
   # Payments
 
   def list_all_payments
-    response = HTTParty.get(api_call('payments/'), :headers => @headers)
+    response = HTTParty.get(api_call("payments/"), :headers => @headers)
     puts response.body
   end
 
@@ -94,30 +93,27 @@ class Instamojo
   end
 
   def payment_details(payment_id)
-    response = HTTParty.get(api_call('payments/#{payment_id}/'), :headers => @headers)
+    response = HTTParty.get(api_call("payments/#{payment_id}/"), :headers => @headers)
     puts response.body
   end
 
   # Refunds
 
   def new_refund
-    response = HTTParty.post(api_call('refunds/'), :headers => @headers,
-      :body => [{ "payment_id" => "1234", "type" => "RFD", "body" => "refunded due to duplicate payment"}].to_json
+    response = HTTParty.post(api_call("refunds/"), :headers => @headers,
+      body: { payment_id: "1234", type: "RFD", body: "refunded due to duplicate payment"}
     )
     puts response.body
   end
 
   def refunds_list
-    response = HTTParty.get(api_call('refunds/'), :headers => @headers)
+    response = HTTParty.get(api_call("refunds/"), :headers => @headers)
     puts response.body
   end
 
   def refund_details(refund_id)
-    response = HTTParty.get(api_call('refunds/#{refund_id}'), :headers => @headers)
+    response = HTTParty.get(api_call("refunds/#{refund_id}"), :headers => @headers)
     puts response.body
   end
-  # def self.hi
-  #   puts "hello world"
-  # end
 
 end

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'Instamojo'
-  s.version     = '0.0.0'
+  s.version     = '0.1.0'
   s.date        = '2010-04-28'
   s.summary     = "Ruby library for Instamojo API"
   s.description = "Assists you to programmatically create, edit and delete links on Instamojo."

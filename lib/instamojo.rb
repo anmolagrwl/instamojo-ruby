@@ -32,6 +32,12 @@ class Instamojo
   # Authentication
   # --------------------
 
+  def login(username, password)
+    response = HTTParty.get(api_call("auth/"), :headers => @headers,
+               body: { username: username, password: password })
+    puts response.body
+  end
+
   def create_auth_token(username, password) # not working
     response = HTTParty.post(api_call("tokens/"), :headers => { "X-Api-Key" => @api_key},
                body: { username: username, password: password })

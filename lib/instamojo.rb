@@ -1,11 +1,4 @@
-# http://guides.rubygems.org/make-your-own-gem/#your-first-gem
-# https://blog.engineyard.com/2014/wrapping-your-api-in-a-ruby-gem
-# http://guides.rubygems.org/rubygems-org-api/
-# Integrating_Instamojo_v1_2.pdf
-# https://github.com/Instamojo/instamojo-py/blob/master/instamojo/api.py
-# https://www.instamojo.com/developers/rest/
-# https://github.com/jnunemaker/httparty
-# http://blog.teamtreehouse.com/its-time-to-httparty
+# https://www.instamojo.com/developers/request-a-payment-api/
 require 'httparty'
 
 class Instamojo
@@ -38,7 +31,7 @@ class Instamojo
     puts response.body
   end
 
-  def create_auth_token(username, password) # not working
+  def new_auth_token(username, password)
     response = HTTParty.post(api_call("tokens/"), :headers => { "X-Api-Key" => @api_key},
                body: { username: username, password: password })
     puts response.body
@@ -49,7 +42,7 @@ class Instamojo
     puts response.body
   end
 
-  def delete_auth_token(auth_token) #not working
+  def delete_auth_token(auth_token)
     response = HTTParty.delete(api_call("tokens/#{auth_token}"), :headers => @headers)
     puts response.body
   end
@@ -123,6 +116,33 @@ class Instamojo
   def refund_details(refund_id)
     response = HTTParty.get(api_call("refunds/#{refund_id}"), :headers => @headers)
     puts response.body
+  end
+
+  # Request a payment (RAP)
+  # --------------------
+
+  def new_rap
+
+  end
+
+  def rap_details
+
+  end
+
+  def list_all_rap
+
+  end
+
+  def filter_rap
+
+  end
+
+  def webhook
+
+  end
+
+  def redirect
+
   end
 
 end

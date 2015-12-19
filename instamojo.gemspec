@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://rubygems.org/gems/instamojo'
   s.license     = 'MIT'
   s.add_runtime_dependency 'httparty', '~> 0'
-  # s.add_runtime_dependency 'json', '~> 0'
+  s.add_runtime_dependency 'json', '1.8.2'
 end

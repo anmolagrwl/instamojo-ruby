@@ -1,12 +1,5 @@
 # JSON.parse(d)["success"]
-# JSON.parse(response.body)
 
-# TODO:
-# - upload_file
-# - archive_link
-# - Filter List of All Payments by Date
-# - check if I could return JSON object
-# - add README
 require 'rubygems'
 require 'httparty'
 require 'json'
@@ -70,11 +63,10 @@ class Instamojo
                 webhook_url: nil, note: nil, file_upload_json: nil, cover_image_json: nil, enable_pwyw: nil, enable_sign: nil )
 
     response = HTTParty.post(api_call("links/"), :headers => @headers,
-      body:  { title: title, description: description, currency: currency, base_price: base_price, quantity: quantity,
-              start_date: start_date, end_date: end_date, venue: venue, timezone: timezone, redirect_url: redirect_url,
-              webhook_url: webhook_url, note: note, file_upload_json: file_upload_json, cover_image_json: cover_image_json,
-              enable_pwyw: enable_pwyw, enable_sign: enable_sign }
-    )
+               body:  { title: title, description: description, currency: currency, base_price: base_price, quantity: quantity,
+               start_date: start_date, end_date: end_date, venue: venue, timezone: timezone, redirect_url: redirect_url,
+               webhook_url: webhook_url, note: note, file_upload_json: file_upload_json, cover_image_json: cover_image_json,
+               enable_pwyw: enable_pwyw, enable_sign: enable_sign })
     return JSON.parse(response.body)
   end
 
@@ -83,17 +75,18 @@ class Instamojo
     return JSON.parse(response.body)
   end
 
-  def upload_file # based on above link AND have to check if it's working
-    # https://github.com/jwagener/httmultiparty
-  end
+  # def upload_file # based on above link AND have to check if it's working
+  #   # https://github.com/jwagener/httmultiparty
+  # end
 
   def link_details(slug: slug)
     response = HTTParty.get(api_call("links/#{slug}"), :headers => @headers)
     return JSON.parse(response.body)
   end
 
-  def archive_link
-    # ....
+  def archive_link(slug: slug)
+      response = HTTParty.delete(api_call("links/#{slug}"), :headers => @headers)
+      return JSON.parse(response.body)
   end
 
   # Payments
@@ -105,8 +98,10 @@ class Instamojo
   end
 
   # Filter List of All Payments by Date
-  def method_name
-    # ...
+  def filter_payments_by_date(created_after: nil, created_before: nil)
+    response = HTTParty.get(api_call("payments/"), :headers => @headers,
+               body: { created_after: created_after, created_before: created_before })
+    return JSON.parse(response.body)
   end
 
   def payment_details(payment_id: payment_id) # have to check if it is working
@@ -119,8 +114,7 @@ class Instamojo
 
   def new_refund(payment_id: nil, type: nil, body: nil)
     response = HTTParty.post(api_call("refunds/"), :headers => @headers,
-      body: { payment_id: payment_id, type: type, body: body}
-    )
+               body: { payment_id: payment_id, type: type, body: body})
     return JSON.parse(response.body)
   end
 
@@ -139,10 +133,9 @@ class Instamojo
 
   def new_rap(purpose: nil, amount: nil, buyer_name: nil, email: nil, phone: nil, send_email: nil, send_sms: nil, redirect_url: nil, webhook: nil, allow_repeated_payments: nil)
     response = HTTParty.post(api_call("payment-requests/"), :headers => @headers,
-      body: { purpose: purpose, amount: amount, buyer_name: buyer_name, email: email,
-        phone: phone, send_email: send_email, send_sms: send_sms, redirect_url: redirect_url,
-        webhook:webhook, allow_repeated_payments:allow_repeated_payments}
-    )
+               body: { purpose: purpose, amount: amount, buyer_name: buyer_name, email: email,
+               phone: phone, send_email: send_email, send_sms: send_sms, redirect_url: redirect_url,
+               webhook:webhook, allow_repeated_payments:allow_repeated_payments})
     return JSON.parse(response.body)
   end
 
@@ -158,7 +151,8 @@ class Instamojo
 
   def filter_rap(min_created_at: nil, max_created_at: nil, min_modified_at: nil, max_modified_at: nil)
     response = HTTParty.get(api_call("payment-requests/"), :headers => @headers,
-                body: { min_created_at: min_created_at, max_created_at: max_created_at, min_modified_at: min_modified_at, max_modified_at:max_modified_at})
+               body: { min_created_at: min_created_at, max_created_at: max_created_at, min_modified_at: min_modified_at,
+               max_modified_at:max_modified_at})
     return JSON.parse(response.body)
   end
 

@@ -121,28 +121,29 @@ class Instamojo
   # Request a payment (RAP)
   # --------------------
 
-  def new_rap
-
+  def new_rap()
+    response = HTTParty.post(api_call("payment-requests/"), :headers => @headers,
+      body: { purpose: purpose, amount: amount, buyer_name: buyer_name, email: email,
+        phone: phone, send_email: send_email, send_sms: send_sms, redirect_url: redirect_url,
+        webhook:webhook, allow_repeated_payments:allow_repeated_payments}
+    )
+    puts response.body
   end
 
-  def rap_details
-
+  def rap_details(rap_id)
+    response = HTTParty.get(api_call("payment-requests/#{rap_id}"), :headers => @headers)
+    puts response.body
   end
 
   def list_all_rap
-
+    response = HTTParty.get(api_call("payment-requests/"), :headers => @headers)
+    puts response.body
   end
 
-  def filter_rap
-
-  end
-
-  def webhook
-
-  end
-
-  def redirect
-
+  def filter_rap()
+    response = HTTParty.get(api_call("payment-requests/"), :headers => @headers,
+                body: { min_created_at: min_created_at, max_created_at: max_created_at, min_modified_at: min_modified_at, max_modified_at:max_modified_at})
+    puts response.body
   end
 
 end
